@@ -49,9 +49,6 @@ public class ManagementDbConfig {
             @Qualifier("managementDataSource") DataSource dataSource
     ) {
         Map<String, Object> jpaProperties = new HashMap<>();
-//        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
-//        jpaProperties.put("hibernate.format_sql", true);
-//        jpaProperties.put("hibernate.use_sql_comments", true);
         jpaProperties.put("hibernate.hbm2ddl.auto", environment.getProperty("spring.jpa-management.properties.hibernate.hbm2ddl.auto"));
         jpaProperties.put("hibernate.format_sql", environment.getProperty("spring.jpa-management.properties.hibernate.format_sql"));
         jpaProperties.put("hibernate.use_sql_comments", environment.getProperty("spring.jpa-management.properties.hibernate.use_sql_comments"));

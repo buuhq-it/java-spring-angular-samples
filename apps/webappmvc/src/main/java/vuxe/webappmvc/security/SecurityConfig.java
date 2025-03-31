@@ -22,6 +22,11 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http,
                                                    PersistentTokenRepository persistentTokenRepository) throws Exception {
         http
+                .sessionManagement(session -> session
+                        .maximumSessions(1)                   // chỉ cho phép 1 session
+                        .maxSessionsPreventsLogin(false)      // false = login mới sẽ thay thế login cũ
+                        .expiredUrl("/auth/login?expired=true") // redirect khi session cũ bị đá ra
+                )
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/user/**").hasRole("USER")
 //                        .requestMatchers("/shared/**").hasAnyRole("USER", "ADMIN")
@@ -35,11 +40,11 @@ public class SecurityConfig {
                         .failureUrl("/auth/login?error=true")
                         .permitAll()
                 )
-                .rememberMe(remember -> remember
-                        .tokenRepository(persistentTokenRepository)
-                        .tokenValiditySeconds(7 * 24 * 60 * 60)
-                        .key("vuxe-remember-me-secret")
-                )
+//                .rememberMe(remember -> remember
+//                        .tokenRepository(persistentTokenRepository)
+//                        .tokenValiditySeconds(7 * 24 * 60 * 60)
+//                        .key("vuxe-remember-me-secret")
+//                )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
                         .logoutRequestMatcher(new AntPathRequestMatcher("/auth/logout", "GET")) // Allow GET

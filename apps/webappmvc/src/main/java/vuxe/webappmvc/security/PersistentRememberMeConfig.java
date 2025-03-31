@@ -8,13 +8,9 @@ import org.springframework.security.web.authentication.rememberme.PersistentToke
 
 import javax.sql.DataSource;
 
+
 @Configuration
 public class PersistentRememberMeConfig {
-//    private final DataSource managementDataSource;
-//
-//    public PersistentRememberMeConfig(DataSource managementDataSource) {
-//        this.managementDataSource = managementDataSource;
-//    }
 
     @Bean
     public PersistentTokenRepository persistentTokenRepository(@Qualifier("managementDataSource") DataSource managementDataSource) {
