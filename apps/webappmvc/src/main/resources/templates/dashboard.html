@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Vu xe App</title>
+
+</head>
+<body>
+<div class="container mt-5">
+    <div class="text-center">
+        <h1>Welcome, <span th:text="${#authentication.name}"></span>!</h1>
+        <p class="lead">You are logged in successfully.</p>
+        <a href="/auth/logout" class="btn btn-danger">Logout</a>
+        <br>
+
+    </div>
+</div>
+
+
+</body>
+</html>

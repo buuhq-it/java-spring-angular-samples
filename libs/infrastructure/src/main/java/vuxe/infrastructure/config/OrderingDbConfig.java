@@ -9,6 +9,7 @@ import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.env.Environment;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
@@ -31,6 +32,12 @@ import java.util.Map;
         "vuxe.domain.common.entity"
 })
 public class OrderingDbConfig  {
+    private final Environment environment;
+
+    public OrderingDbConfig(Environment environment) {
+        this.environment = environment;
+    }
+
     @Primary
     @Bean(name = "orderingDataSource")
     @ConfigurationProperties(prefix = "spring.datasource.ordering")
@@ -45,10 +52,14 @@ public class OrderingDbConfig  {
             @Qualifier("orderingDataSource") DataSource dataSource
     ) {
         Map<String, Object> jpaProperties = new HashMap<>();
-        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
+//        jpaProperties.put("hibernate.hbm2ddl.auto", "update");
 //        jpaProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
-        jpaProperties.put("hibernate.format_sql", true);
-        jpaProperties.put("hibernate.use_sql_comments", true);
+//        jpaProperties.put("hibernate.format_sql", true);
+//        jpaProperties.put("hibernate.use_sql_comments", true);
+
+        jpaProperties.put("hibernate.hbm2ddl.auto", environment.getProperty("spring.jpa-ordering.properties.hibernate.hbm2ddl.auto"));
+        jpaProperties.put("hibernate.format_sql", environment.getProperty("spring.jpa-ordering.properties.hibernate.format_sql"));
+        jpaProperties.put("hibernate.use_sql_comments", environment.getProperty("spring.jpa-ordering.properties.hibernate.use_sql_comments"));
 
         return builder
                 .dataSource(dataSource)
