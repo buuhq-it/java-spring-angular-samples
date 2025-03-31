@@ -8,6 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
@@ -18,7 +19,8 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
         jsr250Enabled = true)
 public class SecurityConfig {
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(HttpSecurity http,
+                                                   PersistentTokenRepository persistentTokenRepository) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
 //                        .requestMatchers("/user/**").hasRole("USER")
@@ -32,6 +34,11 @@ public class SecurityConfig {
                         .defaultSuccessUrl("/dashboard", true)
                         .failureUrl("/auth/login?error=true")
                         .permitAll()
+                )
+                .rememberMe(remember -> remember
+                        .tokenRepository(persistentTokenRepository)
+                        .tokenValiditySeconds(7 * 24 * 60 * 60)
+                        .key("vuxe-remember-me-secret")
                 )
                 .logout(logout -> logout
                         .logoutUrl("/auth/logout")
